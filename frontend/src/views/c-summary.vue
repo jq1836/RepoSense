@@ -6,6 +6,10 @@
         input(type="text", v-on:change="updateFilterSearch", v-model="filterSearch")
         label search
         button.mui-btn.mui-btn--raised(type="button", v-on:click.prevent="resetFilterSearch") x
+      .mui-textfield.commit_size_filter_box
+        input(type="number", step="1", min="0", v-on:change="updateCommitSizeThreshold", v-model="commitSizeThreshold")
+        label minimum commit size
+        button.mui-btn.mui-btn--raised(type="button", v-on:click.prevent="resetCommitSizeThreshold") x
       .mui-select.grouping
         select(v-model="filterGroupSelection")
           option(value="groupByNone") None
@@ -180,6 +184,7 @@ export default defineComponent({
       fileTypes: [] as string[],
       filtered: [] as User[][],
       filterSearch: '',
+      commitSizeThreshold: 0,
       filterGroupSelection: FilterGroupSelection.GroupByRepos,
       sortGroupSelection: SortGroupSelection.GroupTitleDsc, // UI for sorting groups
       sortWithinGroupSelection: SortWithinGroupSelection.Title, // UI for sorting within groups
@@ -364,6 +369,17 @@ export default defineComponent({
       // Only called from an input onchange event, target guaranteed to be input element
       this.filterSearch = (evt.target as HTMLInputElement).value;
       this.getFiltered();
+    },
+
+    resetCommitSizeThreshold() {
+      this.commitSizeThreshold = 0;
+    },
+    updateCommitSizeThreshold(evt: Event) {
+      this.commitSizeThreshold = Math.floor((evt.target as HTMLInputElement).valueAsNumber);
+
+      if (Number.isNaN(this.commitSizeThreshold)) {
+        this.commitSizeThreshold = 0;
+      }
     },
 
     setSummaryHash() {
