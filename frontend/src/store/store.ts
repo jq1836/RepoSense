@@ -18,6 +18,7 @@ export default createStore<StoreState>({
     loadingOverlayCount: 0,
     loadingOverlayMessage: '',
     isTabActive: true,
+    commitSizeThreshold: 0,
   } as StoreState,
   mutations: {
     updateTabZoomInfo(state: StoreState, info: ZoomInfo) {
@@ -81,6 +82,9 @@ export default createStore<StoreState>({
         file.active = isActive;
         file.wasCodeLoaded = file.wasCodeLoaded || file.active;
       });
+    },
+    updateCommitSizeThreshold(state: StoreState, commitSizeThreshold: number) {
+      state.commitSizeThreshold = commitSizeThreshold;
     },
   },
   actions: {

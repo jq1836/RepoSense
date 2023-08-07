@@ -184,7 +184,7 @@ export default defineComponent({
       fileTypes: [] as string[],
       filtered: [] as User[][],
       filterSearch: '',
-      commitSizeThreshold: 0,
+      commitSizeThreshold: 0 as number,
       filterGroupSelection: FilterGroupSelection.GroupByRepos,
       sortGroupSelection: SortGroupSelection.GroupTitleDsc, // UI for sorting groups
       sortWithinGroupSelection: SortWithinGroupSelection.Title, // UI for sorting within groups
@@ -373,6 +373,8 @@ export default defineComponent({
 
     resetCommitSizeThreshold() {
       this.commitSizeThreshold = 0;
+      this.$store.commit('updateCommitSizeThreshold', this.commitSizeThreshold);
+      this.getFiltered();
     },
     updateCommitSizeThreshold(evt: Event) {
       this.commitSizeThreshold = Math.floor((evt.target as HTMLInputElement).valueAsNumber);
@@ -380,6 +382,8 @@ export default defineComponent({
       if (Number.isNaN(this.commitSizeThreshold)) {
         this.commitSizeThreshold = 0;
       }
+      this.$store.commit('updateCommitSizeThreshold', this.commitSizeThreshold);
+      this.getFiltered();
     },
 
     setSummaryHash() {
