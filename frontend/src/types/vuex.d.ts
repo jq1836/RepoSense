@@ -48,6 +48,7 @@ interface StoreState {
   loadingOverlayCount: number;
   loadingOverlayMessage: string;
   isTabActive: boolean;
+  commitSizeThreshold: number;
 }
 
 declare module '@vue/runtime-core' {

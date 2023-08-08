@@ -1,7 +1,7 @@
 <template lang="pug">
 .ramp
   template(v-if="tframe === 'commit'")
-    template(v-for="(slice, j) in user.commits")
+    template(v-for="(slice, j) in filteredCommits")
       template(v-for="(commit, k) in slice.commitResults")
         a.ramp__slice(
           draggable="false",
@@ -88,10 +88,20 @@ export default {
       rampSize: 0.01,
       mergeCommitRampSize: this.rampSize * 20,
       deletesContributionRampSize: this.rampSize * 20,
+      // Todo make use of typescript type safety to prevent misuse of filteredCommits.
+      filteredCommits: this.user.commits,
     };
+  },
+  watch: {
+    '$store.state.commitSizeThreshold': function () {
+      this.filterCommitsBySize(this.$store.state.commitSizeThreshold);
+    },
   },
 
   methods: {
+    filterCommitsBySize(size) {
+      this.filteredCommits = this.user.commits.filter((commit) => commit.insertions >= size);
+    },
     getLink(commit) {
       return window.getCommitLink(commit.repoId, commit.hash);
     },
